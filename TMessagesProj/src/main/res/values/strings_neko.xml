@@ -71,7 +71,7 @@
     <string name="Translation">Translate Nekogram</string>
     <string name="GooglePlay">Google Play</string>
     <string name="ResetStickerSize">Reset sticker size</string>
-    <string name="OfficialChannelUsername">nekoupdates</string>
+    <string name="OfficialChannelUsername">mikogramUpdates</string>
     <string name="RestartAppToTakeEffect">Restart the app to take effect.</string>
     <string name="DisableAppBarShadow">Disable title bar shadow</string>
     <string name="MediaPreview">Media preview in dialog list</string>
@@ -145,9 +145,9 @@
     <string name="OfficialSite">Official site</string>
     <string name="MutualContact">Mutual contact</string>
     <string name="MutualContactDescription">This contact is a mutual contact.</string>
-    <string name="InviteTextNeko">Hey, I\'m using Nekogram to chat. Join me! Download it here: %1$s</string>
+    <string name="InviteTextNeko">Hey, I\'m using Mikogram to chat. Join me! Download it here: %1$s</string>
     <string name="ShareNekogram">Share Nekogram...</string>
-    <string name="NekogramVersion">Mikogram version %1$s Powered by Telegram %2$s Based on Nekogram from %3$s</string>
+    <string name="NekogramVersion">Mikogram version %1$s\nPowered by Telegram %2$s\nBased on Nekogram by %3$s</string>
     <string name="UpdateInstalling">Installing update...</string>
     <string name="UpdateInstallingNotification">A notification will be shown when the update completes.</string>
     <string name="UpdateInstallingRelaunch">The app will relaunch when the update completes.</string>
