@@ -2,13 +2,12 @@ package org.telegram.ui.Stories;
 
 import org.telegram.messenger.MessagesController;
 import org.telegram.messenger.UserConfig;
-import org.telegram.tgnet.AbstractSerializedData;
 import org.telegram.tgnet.InputSerializedData;
 import org.telegram.tgnet.OutputSerializedData;
 import org.telegram.tgnet.TLRPC;
 import org.telegram.tgnet.tl.TL_stories;
 
-import tw.nekomimi.nekogram.helpers.WebAppHelper;
+import dev.axllr8tr.mikogram.helpers.WebAppHelper;
 
 public class MessageMediaStoryFull extends TLRPC.TL_messageMediaStory {
 

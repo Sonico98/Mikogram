@@ -141,7 +141,6 @@
     <string name="MutualContactDescription">Bu kişi de sizi kişilerine kaydetti.</string>
     <string name="InviteTextNeko">Hey, sohbet etmek için Nekogram kullanıyorum. Bana katıl! Buradan indirilebilirsin: %1$s</string>
     <string name="ShareNekogram">Nekogram\'ı paylaş...</string>
-    <string name="NekogramVersion">Telegram %2$s tabanlı\nNekogram %1$s\n%3$s tarafından tasarlandı</string>
     <string name="UpdateInstalling">Güncelleme yükleniyor...</string>
     <string name="UpdateInstallingNotification">Güncelleme tamamlandığında bir bildirim gösterilecek.</string>
     <string name="UpdateInstallingRelaunch">Güncelleme tamamlandığında uygulama kendini yeniden başlatacak.</string>

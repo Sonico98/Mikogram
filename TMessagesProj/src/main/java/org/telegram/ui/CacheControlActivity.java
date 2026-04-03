@@ -110,19 +110,16 @@ import org.telegram.ui.Components.SlideChooseView;
 import org.telegram.ui.Components.StorageDiagramView;
 import org.telegram.ui.Components.StorageUsageView;
 import org.telegram.ui.Components.TypefaceSpan;
-import org.telegram.ui.Components.UndoView;
 import org.telegram.ui.Storage.CacheModel;
 
 import java.io.File;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Objects;
 
-import tw.nekomimi.nekogram.helpers.EmojiHelper;
+import dev.axllr8tr.mikogram.helpers.EmojiHelper;
 
 public class CacheControlActivity extends BaseFragment implements NotificationCenter.NotificationCenterDelegate {
 

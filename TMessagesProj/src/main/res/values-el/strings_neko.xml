@@ -142,7 +142,6 @@
     <string name="MutualContactDescription">Αυτή είναι μια παρόμοια επαφή.</string>
     <string name="InviteTextNeko">Γεια σας, χρησιμοποιώ το Nekogram για συνομιλία. Ελάτε μαζί μου! Κατεβάστε το εδώ: %1$s</string>
     <string name="ShareNekogram">Κοινοποίηση Nekogram...</string>
-    <string name="NekogramVersion">Nekogram %1$s\nΒασισμένο στο Telegram %2$s\nΣχεδιάστηκε από %3$s</string>
     <string name="UpdateInstalling">Εγκατάσταση ενημέρωσης...</string>
     <string name="UpdateInstallingNotification">Θα εμφανιστεί μια ειδοποίηση όταν ολοκληρωθεί η ενημέρωση.</string>
     <string name="UpdateInstallingRelaunch">Η εφαρμογή θα επανεκκινηθεί μόλις ολοκληρωθεί η ενημέρωση.</string>

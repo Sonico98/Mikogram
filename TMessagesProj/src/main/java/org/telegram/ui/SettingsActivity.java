@@ -18,7 +18,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ConfigurationInfo;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -136,13 +135,12 @@ import org.telegram.ui.bots.SetupEmojiStatusSheet;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Locale;
 import java.util.Set;
 
 import me.vkryl.android.animator.BoolAnimator;
 import me.vkryl.android.animator.FactorAnimator;
-import tw.nekomimi.nekogram.helpers.PasscodeHelper;
-import tw.nekomimi.nekogram.settings.NekoSettingsActivity;
+import dev.axllr8tr.mikogram.helpers.PasscodeHelper;
+import dev.axllr8tr.mikogram.settings.NekoSettingsActivity;
 
 public class SettingsActivity extends BaseFragment implements NotificationCenter.NotificationCenterDelegate, ImageUpdater.ImageUpdaterDelegate, MainTabsActivity.TabFragmentDelegate, FactorAnimator.Target {
 

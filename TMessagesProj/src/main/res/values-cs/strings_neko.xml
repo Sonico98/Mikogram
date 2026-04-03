@@ -141,7 +141,6 @@
     <string name="MutualContactDescription">Tento kontakt je vzájemný.</string>
     <string name="InviteTextNeko">TextPozvánkyNeko</string>
     <string name="ShareNekogram">PodílNekoGram...</string>
-    <string name="NekogramVersion">VerzeNekogram</string>
     <string name="UpdateInstalling">InstalaceAktualizace</string>
     <string name="UpdateInstallingNotification">UpozorněníNaInstalaciAktualizace</string>
     <string name="UpdateInstallingRelaunch">AktualizaceInstalaceZnovuSpustit.</string>

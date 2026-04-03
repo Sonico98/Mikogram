@@ -134,7 +134,6 @@
     <string name="MutualContactDescription">Denne kontakt er en gensidig kontakt.</string>
     <string name="InviteTextNeko">Hej, jeg bruger Nekogram til at chatte med. Tilmeld dig mig! Download det her: %1$s</string>
     <string name="ShareNekogram">Del Nekogram...</string>
-    <string name="NekogramVersion">Nekogram %1$s\nBaseret på Telegram %2$s\nDesignet af %3$s</string>
     <string name="UpdateInstalling">Installerer opdatering...</string>
     <string name="UpdateInstallingNotification">En meddelelse vil blive vist, når opdateringen er færdig.</string>
     <string name="UpdateInstallingRelaunch">Nekogram vil genstarte, når opdateringen er færdig.</string>

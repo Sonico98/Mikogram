@@ -79,7 +79,6 @@ import androidx.core.util.Consumer;
 import org.telegram.messenger.AccountInstance;
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.ApplicationLoader;
-import org.telegram.messenger.BuildConfig;
 import org.telegram.messenger.BuildVars;
 import org.telegram.messenger.ChatObject;
 import org.telegram.messenger.ContactsController;
@@ -168,9 +167,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
-import tw.nekomimi.nekogram.Extra;
-import tw.nekomimi.nekogram.helpers.PasscodeHelper;
-import me.vkryl.core.BitwiseUtils;
+import dev.axllr8tr.mikogram.Extra;
+import dev.axllr8tr.mikogram.helpers.PasscodeHelper;
 
 public class AlertsCreator {
     public final static int PERMISSIONS_REQUEST_TOP_ICON_SIZE = 72;

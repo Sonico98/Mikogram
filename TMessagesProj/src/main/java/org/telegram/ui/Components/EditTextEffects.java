@@ -13,14 +13,11 @@ import android.os.Looper;
 import android.text.Editable;
 import android.text.Layout;
 import android.text.Spannable;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
-import android.widget.EditText;
 
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.FileLog;
-import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.Components.spoilers.SpoilerEffect;
 import org.telegram.ui.Components.spoilers.SpoilersClickDetector;
 
@@ -28,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-import tw.nekomimi.nekogram.appcompat.AppCompatEditText;
+import dev.axllr8tr.mikogram.appcompat.AppCompatEditText;
 
 public class EditTextEffects extends AppCompatEditText {
     private final static int SPOILER_TIMEOUT = 10000;

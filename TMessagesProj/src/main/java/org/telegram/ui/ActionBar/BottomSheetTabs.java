@@ -20,7 +20,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextPaint;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewParent;
@@ -61,7 +60,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import tw.nekomimi.nekogram.helpers.WebAppHelper;
+import dev.axllr8tr.mikogram.helpers.WebAppHelper;
 
 public class BottomSheetTabs extends FrameLayout {
 

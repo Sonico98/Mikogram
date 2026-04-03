@@ -81,7 +81,6 @@
     <string name="AutoPauseVideo">動画を自動で一時停止</string>
     <string name="AutoPauseVideoAbout">ロック画面/バックグラウンドに切り替えた際に動画を一時停止します。</string>
     <string name="DisableProximityEvents">近接センサーを無効化</string>
-    <string name="Page1Message2">NekogramはTelegramのAPIを使用している**非公式の**メッセージアプリです。</string>
     <string name="MapDriftingFix">中国本土の地図のズレを修正</string>
     <string name="VoiceEnhancements">ノイズリダクション</string>
     <string name="VoiceEnhancementsAbout">ノイズの抑制と音声の正規化をします。</string>
@@ -144,7 +143,6 @@
     <string name="MutualContactDescription">この連絡先は相互に交換されています。</string>
     <string name="InviteTextNeko">こんにちは！Nekogramを使ってチャットをしています。参加してください！ダウンロードはこちらから: %1$s</string>
     <string name="ShareNekogram">Nekogramを共有...</string>
-    <string name="NekogramVersion">Nekogram %1$s\n Nekogramのベースになったバージョン: Telegram %2$s\n デザイン: %3$s\n日本語訳: りお (Telegram: @RioLovee)</string>
     <string name="UpdateInstalling">更新をインストールしています…</string>
     <string name="UpdateInstallingNotification">更新が完了すると通知が表示されます。</string>
     <string name="UpdateInstallingRelaunch">更新が完了するとアプリが再起動します。</string>

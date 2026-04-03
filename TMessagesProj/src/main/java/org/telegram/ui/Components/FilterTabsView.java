@@ -34,11 +34,9 @@ import android.text.SpannableStringBuilder;
 import android.text.StaticLayout;
 import android.text.TextPaint;
 import android.text.TextUtils;
-import android.util.Log;
 import android.util.Property;
 import android.util.SparseIntArray;
 import android.view.HapticFeedbackConstants;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityNodeInfo;
@@ -70,10 +68,9 @@ import org.telegram.ui.Components.blur3.drawable.BlurredBackgroundDrawable;
 import org.telegram.ui.Stories.recorder.HintView2;
 
 import java.util.ArrayList;
-import java.util.Map;
 
-import tw.nekomimi.nekogram.NekoConfig;
-import tw.nekomimi.nekogram.folder.FolderIconHelper;
+import dev.axllr8tr.mikogram.NekoConfig;
+import dev.axllr8tr.mikogram.folder.FolderIconHelper;
 
 @SuppressLint("ViewConstructor")
 public class FilterTabsView extends FrameLayout {

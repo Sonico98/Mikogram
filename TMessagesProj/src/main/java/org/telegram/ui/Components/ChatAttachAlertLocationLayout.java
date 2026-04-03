@@ -82,7 +82,6 @@ import org.telegram.ui.Cells.SendLocationCell;
 import org.telegram.ui.Cells.ShadowSectionCell;
 import org.telegram.ui.Cells.SharingLiveLocationCell;
 import org.telegram.ui.ChatActivity;
-import org.telegram.ui.Components.blur3.ViewGroupPartRenderer;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -91,8 +90,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import tw.nekomimi.nekogram.NekoConfig;
-import tw.nekomimi.nekogram.location.NekoLocationSource;
+import dev.axllr8tr.mikogram.NekoConfig;
+import dev.axllr8tr.mikogram.location.NekoLocationSource;
 
 public class ChatAttachAlertLocationLayout extends ChatAttachAlert.AttachAlertLayout implements NotificationCenter.NotificationCenterDelegate {
 

@@ -28,7 +28,6 @@ import android.text.SpannableString;
 import android.text.StaticLayout;
 import android.text.TextPaint;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 
@@ -55,7 +54,7 @@ import org.telegram.ui.Components.ReplyMessageLine;
 import org.telegram.ui.Components.chat.ViewPositionWatcher;
 import org.telegram.ui.Components.spoilers.SpoilerEffect;
 
-import tw.nekomimi.nekogram.NekoConfig;
+import dev.axllr8tr.mikogram.NekoConfig;
 
 public class TextMessageEnterTransition implements MessageEnterTransitionContainer.Transition {
     float fromRadius;

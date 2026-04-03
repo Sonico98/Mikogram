@@ -142,7 +142,6 @@
     <string name="MutualContactDescription">Ten kontakt jest kontaktem wzajemnym.</string>
     <string name="InviteTextNeko">Hej, używam Nekogram do czatowania. Dołącz do mnie! Pobierz go tutaj: %1$s</string>
     <string name="ShareNekogram">Udostępnij Nekogram…</string>
-    <string name="NekogramVersion">Nekogram %1$s\nBazujący na Telegramie %2$s\nZaprojektowany przez %3$s</string>
     <string name="UpdateInstalling">Instalowanie aktualizacji…</string>
     <string name="UpdateInstallingNotification">Po zakończeniu aktualizacji zostanie wyświetlone powiadomienie.</string>
     <string name="UpdateInstallingRelaunch">Aplikacja uruchomi się ponownie po zakończeniu aktualizacji.</string>

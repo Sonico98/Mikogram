@@ -16,7 +16,6 @@ import android.app.assist.AssistContent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -66,8 +65,8 @@ import org.telegram.ui.bots.BotWebViewAttachedSheet;
 
 import java.util.ArrayList;
 
-import tw.nekomimi.nekogram.helpers.MessageHelper;
-import tw.nekomimi.nekogram.helpers.UserHelper;
+import dev.axllr8tr.mikogram.helpers.MessageHelper;
+import dev.axllr8tr.mikogram.helpers.UserHelper;
 
 public abstract class BaseFragment {
 

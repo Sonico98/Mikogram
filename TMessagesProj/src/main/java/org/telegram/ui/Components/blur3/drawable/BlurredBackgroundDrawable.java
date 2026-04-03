@@ -28,9 +28,6 @@ import androidx.annotation.RequiresApi;
 import androidx.core.graphics.ColorUtils;
 import androidx.core.math.MathUtils;
 
-import com.google.common.collect.MapMaker;
-
-import org.telegram.messenger.BuildConfig;
 import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.Components.blur3.Blur3HashImpl;
 import org.telegram.ui.Components.blur3.drawable.color.BlurredBackgroundColorProvider;
@@ -44,9 +41,8 @@ import org.telegram.ui.Components.blur3.utils.NinePatchBuilder;
 
 import java.lang.ref.WeakReference;
 import java.util.Arrays;
-import java.util.Map;
 
-import tw.nekomimi.nekogram.NekoConfig;
+import dev.axllr8tr.mikogram.NekoConfig;
 
 public abstract class BlurredBackgroundDrawable extends Drawable {
     public BlurredBackgroundDrawable() {

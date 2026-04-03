@@ -142,9 +142,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Stack;
 
-import tw.nekomimi.nekogram.NekoConfig;
-import tw.nekomimi.nekogram.accessibility.AccConfig;
-import tw.nekomimi.nekogram.helpers.MessageFilterHelper;
+import dev.axllr8tr.mikogram.NekoConfig;
+import dev.axllr8tr.mikogram.accessibility.AccConfig;
+import dev.axllr8tr.mikogram.helpers.MessageFilterHelper;
 
 public class DialogCell extends BaseCell implements StoriesListPlaceProvider.AvatarOverlaysView {
 

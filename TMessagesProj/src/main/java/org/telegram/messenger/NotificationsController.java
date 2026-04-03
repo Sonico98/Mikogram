@@ -26,12 +26,9 @@ import android.graphics.BitmapFactory;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.ImageDecoder;
 import android.graphics.LinearGradient;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.graphics.Path;
-import android.graphics.PixelFormat;
 import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
@@ -97,9 +94,9 @@ import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.function.Consumer;
 
-import tw.nekomimi.nekogram.NekoConfig;
-import tw.nekomimi.nekogram.helpers.MessageFilterHelper;
-import tw.nekomimi.nekogram.helpers.PasscodeHelper;
+import dev.axllr8tr.mikogram.NekoConfig;
+import dev.axllr8tr.mikogram.helpers.MessageFilterHelper;
+import dev.axllr8tr.mikogram.helpers.PasscodeHelper;
 
 public class NotificationsController extends BaseController {
 

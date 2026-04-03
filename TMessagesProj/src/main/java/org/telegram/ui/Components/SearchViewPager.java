@@ -8,7 +8,6 @@ import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.RectF;
@@ -74,13 +73,12 @@ import org.telegram.ui.SearchAdsInfoBottomSheet;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Set;
 
-import tw.nekomimi.nekogram.NekoConfig;
-import tw.nekomimi.nekogram.forward.ForwardContext;
-import tw.nekomimi.nekogram.forward.ForwardDrawable;
-import tw.nekomimi.nekogram.forward.ForwardItem;
+import dev.axllr8tr.mikogram.NekoConfig;
+import dev.axllr8tr.mikogram.forward.ForwardContext;
+import dev.axllr8tr.mikogram.forward.ForwardDrawable;
+import dev.axllr8tr.mikogram.forward.ForwardItem;
 
 public class SearchViewPager extends ViewPagerFixed implements FilteredSearchView.UiCallback, NotificationCenter.NotificationCenterDelegate, IBlur3Capture {
 

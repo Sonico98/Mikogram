@@ -61,7 +61,6 @@ import org.telegram.ui.Cells.BotSwitchCell;
 import org.telegram.ui.Cells.ContextLinkCell;
 import org.telegram.ui.Cells.MentionCell;
 import org.telegram.ui.Cells.StickerCell;
-import org.telegram.ui.Cells.TextInfoPrivacyCell;
 import org.telegram.ui.ChatActivity;
 import org.telegram.ui.Components.AnimatedEmojiSpan;
 import org.telegram.ui.Components.AvatarDrawable;
@@ -79,7 +78,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import tw.nekomimi.nekogram.helpers.InlineBotHelper;
+import dev.axllr8tr.mikogram.helpers.InlineBotHelper;
 
 public class MentionsAdapter extends RecyclerListView.SelectionAdapter implements NotificationCenter.NotificationCenterDelegate {
 

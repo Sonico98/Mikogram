@@ -19,7 +19,7 @@ import org.telegram.ui.Components.ViewPagerFixed;
 
 import java.util.ArrayList;
 
-import tw.nekomimi.nekogram.NekoConfig;
+import dev.axllr8tr.mikogram.NekoConfig;
 
 public abstract class ViewPagerActivity extends BaseFragment {
     protected final SparseArray<FragmentState> fragmentsArr = new SparseArray<>();

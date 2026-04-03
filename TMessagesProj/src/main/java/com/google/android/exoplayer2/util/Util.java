@@ -2930,7 +2930,7 @@ public final class Util {
         "nob", "no-nob",
         "nn", "no-nno",
         "nno", "no-nno",
-        "tw", "ak-twi",
+              "dev", "ak-twi",
         "twi", "ak-twi",
         "bs", "hbs-bos",
         "bos", "hbs-bos",

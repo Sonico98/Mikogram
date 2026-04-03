@@ -125,7 +125,6 @@ import org.telegram.ui.Components.SendingFileDrawable;
 import org.telegram.ui.Components.StatusDrawable;
 import org.telegram.ui.Components.ThemeEditorView;
 import org.telegram.ui.Components.TypingDotsDrawable;
-import org.telegram.ui.Components.blur3.utils.NinePatchBuilder;
 import org.telegram.ui.LaunchActivity;
 import org.telegram.ui.RoundVideoProgressShadow;
 import org.telegram.ui.ThemeActivity;
@@ -151,7 +150,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
 
-import tw.nekomimi.nekogram.helpers.MonetHelper;
+import dev.axllr8tr.mikogram.helpers.MonetHelper;
 
 public class Theme {
 

@@ -139,7 +139,6 @@
     <string name="MutualContactDescription">Šis kontakts ir savstarpējs kontakts.</string>
     <string name="InviteTextNeko">Hei, es izmantoju Nekogram, lai tērzētu. Pievienojies man! Lejupielādējiet to šeit: %1$s</string>
     <string name="ShareNekogram">Kopīgojiet Nekogram...</string>
-    <string name="NekogramVersion">Nekogram %1$s\nPamatojoties uz Telegram %2$s\n\n Izstrādāts %3$s</string>
     <string name="UpdateInstalling">Atjauninājumu instalēšana...</string>
     <string name="UpdateInstallingNotification">Pēc atjaunināšanas pabeigšanas tiks parādīts paziņojums.</string>
     <string name="UpdateInstallingRelaunch">Pēc atjaunināšanas pabeigšanas lietotne tiks palaista no jauna.</string>

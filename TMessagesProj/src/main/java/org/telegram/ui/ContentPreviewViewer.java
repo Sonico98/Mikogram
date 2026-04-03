@@ -96,7 +96,7 @@ import org.telegram.ui.Stories.DarkThemeResourceProvider;
 import java.util.ArrayList;
 import java.util.List;
 
-import tw.nekomimi.nekogram.helpers.MessageHelper;
+import dev.axllr8tr.mikogram.helpers.MessageHelper;
 
 public class ContentPreviewViewer {
 

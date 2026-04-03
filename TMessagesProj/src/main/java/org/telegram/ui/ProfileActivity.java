@@ -128,7 +128,6 @@ import org.telegram.PhoneFormat.PhoneFormat;
 import org.telegram.messenger.AccountInstance;
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.ApplicationLoader;
-import org.telegram.messenger.BuildConfig;
 import org.telegram.messenger.AuthTokensHelper;
 import org.telegram.messenger.BillingController;
 import org.telegram.messenger.BirthdayController;
@@ -327,7 +326,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
@@ -336,13 +334,13 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import tw.nekomimi.nekogram.BackButtonMenuRecent;
-import tw.nekomimi.nekogram.NekoConfig;
-import tw.nekomimi.nekogram.SimpleTextViewSwitcher;
-import tw.nekomimi.nekogram.helpers.PopupHelper;
-import tw.nekomimi.nekogram.helpers.remote.ConfigHelper;
-import tw.nekomimi.nekogram.settings.NekoSettingsActivity;
-import tw.nekomimi.nekogram.translator.Translator;
+import dev.axllr8tr.mikogram.BackButtonMenuRecent;
+import dev.axllr8tr.mikogram.NekoConfig;
+import dev.axllr8tr.mikogram.SimpleTextViewSwitcher;
+import dev.axllr8tr.mikogram.helpers.PopupHelper;
+import dev.axllr8tr.mikogram.helpers.remote.ConfigHelper;
+import dev.axllr8tr.mikogram.settings.NekoSettingsActivity;
+import dev.axllr8tr.mikogram.translator.Translator;
 import me.vkryl.android.animator.BoolAnimator;
 
 public class ProfileActivity extends BaseFragment implements NotificationCenter.NotificationCenterDelegate, DialogsActivity.DialogsActivityDelegate, SharedMediaLayout.SharedMediaPreloaderDelegate, ImageUpdater.ImageUpdaterDelegate, SharedMediaLayout.Delegate, MainTabsActivity.TabFragmentDelegate {

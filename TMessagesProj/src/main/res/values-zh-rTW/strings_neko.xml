@@ -83,7 +83,6 @@
     <string name="AutoPauseVideo">自動暫停影片</string>
     <string name="AutoPauseVideoAbout">當鎖定螢幕/切換到背景時</string>
     <string name="DisableProximityEvents">禁用接近事件</string>
-    <string name="Page1Message2">Nekogram 是使用 Telegram API\n的**非官方**應用</string>
     <string name="MapDriftingFix">中國大陸地圖漂移修復</string>
     <string name="VoiceEnhancements">語音增強功能</string>
     <string name="VoiceEnhancementsAbout">雜訊抑制和語音歸一化</string>
@@ -146,7 +145,6 @@
     <string name="MutualContactDescription">此連絡人是相互聯繫人。</string>
     <string name="InviteTextNeko">嘿，我正在使用Nekogram聊天。加入我！在這裡下載： %1$s</string>
     <string name="ShareNekogram">分享 Nekogram...</string>
-    <string name="NekogramVersion">Nekogram %1$s\n基於 Telegram %2$s\n由 %3$s 設計。</string>
     <string name="UpdateInstalling">安裝更新...</string>
     <string name="UpdateInstallingNotification">更新完成後將顯示通知</string>
     <string name="UpdateInstallingRelaunch">更新完成後, 應用程序將重新啟動</string>
