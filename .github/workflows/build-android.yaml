@@ -1,0 +1,224 @@
+name: Build Android APK
+
+on:
+  workflow_dispatch:
+    inputs:
+      build_type:
+        description: Build variant to produce
+        required: true
+        default: debug
+        type: choice
+        options:
+          - debug
+          - release
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+
+    env:
+      JAVA_VERSION: "21"
+      TARGET_ABI: "arm64-v8a"
+      ANDROID_PLATFORM: "android-36"
+      ANDROID_BUILD_TOOLS: "36.1.0"
+      ANDROID_NDK_VERSION: "27.3.13750724"
+      ANDROID_CMAKE_VERSION: "4.0.2"
+      EXTRA_APP_ID: ${{ secrets.NEKO_APP_ID }}
+      EXTRA_APP_HASH: ${{ secrets.NEKO_APP_HASH }}
+      EXTRA_PLAYSTORE_APP_URL: ${{ secrets.NEKO_PLAYSTORE_APP_URL }}
+      EXTRA_WS_USER_AGENT: ${{ secrets.NEKO_WS_USER_AGENT }}
+      EXTRA_WS_CONN_HASH: ${{ secrets.NEKO_WS_CONN_HASH }}
+      EXTRA_WS_DEFAULT_DOMAIN: ${{ secrets.NEKO_WS_DEFAULT_DOMAIN }}
+      EXTRA_TWPIC_BOT_USERNAME: ${{ secrets.NEKO_TWPIC_BOT_USERNAME }}
+      EXTRA_FORCE_ANALYTICS: ${{ secrets.NEKO_FORCE_ANALYTICS }}
+      EXTRA_TLV_URL: ${{ secrets.NEKO_TLV_URL }}
+      EXTRA_SENTRY_DSN: ${{ secrets.NEKO_SENTRY_DSN }}
+      SIGNING_KEYSTORE_B64: ${{ secrets.NEKO_KEYSTORE_B64 }}
+      SIGNING_STORE_PASSWORD: ${{ secrets.NEKO_STORE_PASSWORD }}
+      SIGNING_KEY_ALIAS: ${{ secrets.NEKO_KEY_ALIAS }}
+      SIGNING_KEY_PASSWORD: ${{ secrets.NEKO_KEY_PASSWORD }}
+      GOOGLE_SERVICES_JSON_B64: ${{ secrets.NEKO_GOOGLE_SERVICES_JSON_B64 }}
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: ${{ env.JAVA_VERSION }}
+          cache: gradle
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Android packages
+        shell: bash
+        run: |
+          set -euo pipefail
+          yes | sdkmanager --licenses > /dev/null || true
+          sdkmanager \
+            "platform-tools" \
+            "build-tools;${ANDROID_BUILD_TOOLS}" \
+            "platforms;${ANDROID_PLATFORM}" \
+            "ndk;${ANDROID_NDK_VERSION}" \
+            "cmake;${ANDROID_CMAKE_VERSION}"
+
+      - name: Validate required secrets
+        shell: bash
+        run: |
+          set -euo pipefail
+          missing=()
+          for var in EXTRA_APP_ID EXTRA_APP_HASH GOOGLE_SERVICES_JSON_B64; do
+            if [ -z "${!var:-}" ]; then
+              missing+=("$var")
+            fi
+          done
+          if [ "${{ github.event.inputs.build_type }}" = "release" ]; then
+            for var in SIGNING_KEYSTORE_B64 SIGNING_STORE_PASSWORD SIGNING_KEY_ALIAS SIGNING_KEY_PASSWORD; do
+              if [ -z "${!var:-}" ]; then
+                missing+=("$var")
+              fi
+            done
+          fi
+          if [ "${#missing[@]}" -gt 0 ]; then
+            printf 'Missing required GitHub secrets for this run:\n'
+            printf ' - %s\n' "${missing[@]}"
+            exit 1
+          fi
+
+      - name: Create local.properties
+        shell: bash
+        run: |
+          set -euo pipefail
+          KEYSTORE_PATH="${GITHUB_WORKSPACE}/release.keystore"
+          cat > local.properties <<EOF
+          sdk.dir=${ANDROID_SDK_ROOT}
+          EOF
+          if [ -n "${SIGNING_KEYSTORE_B64:-}" ]; then
+            echo "${SIGNING_KEYSTORE_B64}" | base64 --decode > "${KEYSTORE_PATH}"
+            cat >> local.properties <<EOF
+          storeFile=${KEYSTORE_PATH}
+          storePassword=${SIGNING_STORE_PASSWORD}
+          keyAlias=${SIGNING_KEY_ALIAS}
+          keyPassword=${SIGNING_KEY_PASSWORD}
+          EOF
+          fi
+
+      - name: Restore google-services.json
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p TMessagesProj_App
+          echo "${GOOGLE_SERVICES_JSON_B64}" | base64 --decode > TMessagesProj_App/google-services.json
+
+      - name: Generate Extra.java
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p TMessagesProj/src/main/java/tw/nekomimi/nekogram
+          python3 - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          def java_string(value: str) -> str:
+              return json.dumps(value or "")
+
+          def java_nullable_string(value: str) -> str:
+              return "null" if not value else json.dumps(value)
+
+          app_id = os.environ["EXTRA_APP_ID"].strip()
+          if not app_id.isdigit():
+              raise SystemExit("EXTRA_APP_ID must be an integer")
+
+          force_analytics = os.environ.get("EXTRA_FORCE_ANALYTICS", "").strip().lower()
+          if force_analytics not in {"", "true", "false"}:
+              raise SystemExit("EXTRA_FORCE_ANALYTICS must be true or false when set")
+          force_analytics = force_analytics or "false"
+
+          content = f"""package tw.nekomimi.nekogram;
+
+          import org.telegram.messenger.BuildConfig;
+
+          import java.util.List;
+
+          import tw.nekomimi.nekogram.helpers.UserHelper;
+          import tw.nekomimi.nekogram.helpers.remote.ConfigHelper;
+
+          public class Extra {{
+              public static final int APP_ID = {app_id};
+              public static final String APP_HASH = {java_string(os.environ["EXTRA_APP_HASH"])};
+
+              public static final String PLAYSTORE_APP_URL = {java_string(os.environ.get("EXTRA_PLAYSTORE_APP_URL", ""))};
+
+              public static String WS_USER_AGENT = {java_string(os.environ.get("EXTRA_WS_USER_AGENT", ""))};
+              public static String WS_CONN_HASH = {java_string(os.environ.get("EXTRA_WS_CONN_HASH", ""))};
+              public static String WS_DEFAULT_DOMAIN = {java_string(os.environ.get("EXTRA_WS_DEFAULT_DOMAIN", ""))};
+
+              public static String TWPIC_BOT_USERNAME = {java_nullable_string(os.environ.get("EXTRA_TWPIC_BOT_USERNAME", ""))};
+
+              public static boolean FORCE_ANALYTICS = {force_analytics};
+
+              public static String TLV_URL = {java_string(os.environ.get("EXTRA_TLV_URL", ""))};
+
+              public static String SENTRY_DSN = {java_string(os.environ.get("EXTRA_SENTRY_DSN", ""))};
+
+              public static boolean isDirectApp() {{
+                  return "release".equals(BuildConfig.BUILD_TYPE) || "debug".equals(BuildConfig.BUILD_TYPE);
+              }}
+
+              public static List<ConfigHelper.News> getDefaultNews() {{
+                  return null;
+              }}
+
+              public static UserHelper.BotInfo getHelperBot() {{
+                  return null;
+              }}
+
+              public static UserHelper.UserInfoBot getUserInfoBot(boolean fallback) {{
+                  return null;
+              }}
+
+              public static boolean isTrustedBot(long id) {{
+                  return false;
+              }}
+          }}
+          """
+
+          Path("TMessagesProj/src/main/java/tw/nekomimi/nekogram/Extra.java").write_text(content, encoding="utf-8")
+          PY
+
+      - name: Tune Gradle for CI
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat >> gradle.properties <<EOF
+          org.gradle.jvmargs=-Xmx5g -XX:MaxMetaspaceSize=1g -Dfile.encoding=UTF-8 -XX:+UseParallelGC
+          org.gradle.workers.max=2
+          kotlin.incremental=false
+          EOF
+
+      - name: Build debug APKs
+        if: ${{ github.event.inputs.build_type == 'debug' }}
+        run: ./gradlew --no-daemon --max-workers=2 -PTARGET_ABI=${TARGET_ABI} assembleDebug
+
+      - name: Build release APKs
+        if: ${{ github.event.inputs.build_type == 'release' }}
+        run: ./gradlew --no-daemon --max-workers=2 -PTARGET_ABI=${TARGET_ABI} assembleRelease
+
+      - name: Collect APKs
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts
+          find TMessagesProj_App/build/outputs/apk -name "*${TARGET_ABI}.apk" -print -exec cp {} artifacts/ \;
+
+      - name: Upload APK artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: nekogram-${{ github.event.inputs.build_type }}-apks
+          path: artifacts/*.apk
+          if-no-files-found: error
