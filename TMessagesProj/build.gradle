@@ -4,12 +4,27 @@ import java.nio.file.Paths
 plugins {
     id 'com.android.library'
     id 'org.lsposed.lsparanoid'
+    id "io.sentry.android.gradle" version "6.3.0"
 }
 
 configurations.configureEach {
     exclude group: 'androidx.recyclerview', module: 'recyclerview'
     exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jdk7'
     exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jdk8'
+}
+
+sentry {
+    uploadNativeSymbols = true
+    includeSourceContext = true
+    additionalSourceDirsForSourceContext = [ '../TMessagesProj/src/main/java' ]
+    autoInstallation {
+        enabled = false
+    }
+    ignoredBuildTypes = ["debug"]
+    
+    org = System.getenv("SENTRY_ORG")
+    projectName = System.getenv("SENTRY_PROJECT")
+    authToken = System.getenv("SENTRY_AUTH_TOKEN")
 }
 
 dependencies {
