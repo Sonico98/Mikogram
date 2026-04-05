@@ -61,7 +61,8 @@ public class ConfigHelper extends BaseRemoteHelper {
     private static List<News> getNews() {
         Config config = getInstance().getConfig();
         if (config == null || config.news == null) {
-            List<News> defaultNews != null ? defaultNews : Collections.emptyList();
+            List<News> defaultNews = Extra.getDefaultNews();
+            return defaultNews != null ? defaultNews : Collections.emptyList();
         }
         ArrayList<News> newsItems = new ArrayList<>();
         config.news.forEach(news -> {
