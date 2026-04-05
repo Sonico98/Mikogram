@@ -39,6 +39,9 @@ jobs:
       SIGNING_KEY_ALIAS: ${{ secrets.NEKO_KEY_ALIAS }}
       SIGNING_KEY_PASSWORD: ${{ secrets.NEKO_KEY_PASSWORD }}
       GOOGLE_SERVICES_JSON_B64: ${{ secrets.NEKO_GOOGLE_SERVICES_JSON_B64 }}
+      SENTRY_AUTH_TOKEN: ${{ secrets.NEKO_SENTRY_TOKEN }}
+      SENTRY_ORG: ${{ secrets.NEKO_SENTRY_ORG }}
+      SENTRY_PROJECT: ${{ secrets.NEKO_SENTRY_PROJECT }}
 
     steps:
       - name: Check out source
