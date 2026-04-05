@@ -196,7 +196,7 @@ jobs:
         run: |
           set -euo pipefail
           cat >> gradle.properties <<EOF
-           org.gradle.jvmargs=-Xmx5g -XX:MaxMetaspaceSize=1g -Dfile.encoding=UTF-8 -XX:+UseParallelGC
+           -XX:MaxMetaspaceSize=1g -Dfile.encoding=UTF-8 -XX:+UseParallelGC
           org.gradle.workers.max=2
           kotlin.incremental=false
           EOF
