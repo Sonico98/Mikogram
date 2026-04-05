@@ -1,15 +1,22 @@
-name: Build Nekogram
+name: Build Android APK
 
 on:
-  push:
-    branches: [ "master", "main" ]
-  pull_request:
-    branches: [ "master", "main" ]
   workflow_dispatch:
+    inputs:
+      build_type:
+        description: Build variant to produce
+        required: true
+        default: release
+        type: choice
+        options:
+          - debug
+          - release
+
 jobs:
   build:
-    name: Build
     runs-on: ubuntu-latest
+    timeout-minutes: 120
+
     env:
       JAVA_VERSION: "21"
       TARGET_ABI: "arm64-v8a"
@@ -33,37 +40,79 @@ jobs:
       SIGNING_KEY_PASSWORD: ${{ secrets.NEKO_KEY_PASSWORD }}
       GOOGLE_SERVICES_JSON_B64: ${{ secrets.NEKO_GOOGLE_SERVICES_JSON_B64 }}
 
-    strategy:
-      matrix:
-        type: [debug, release]
-        include:
-          - type: debug
-            task: assembleDebug
-            name: "Debug"
-          - type: release
-            task: assembleRelease
-            name: "Release"
-
     steps:
-      - uses: actions/checkout@v4
-        with:
-          submodules: true
+      - name: Check out source
+        uses: actions/checkout@v4
 
-      - name: Free up disk space
-        uses: jlumbroso/free-disk-space@54081f138730dfa15788a46383842cd2f914a1be
-        with:
-          tool-cache: false
-          android: false
-
-      - name: Set up JDK 21
+      - name: Set up Java
         uses: actions/setup-java@v4
         with:
-          java-version: '21'
-          distribution: 'temurin'
+          distribution: temurin
+          java-version: ${{ env.JAVA_VERSION }}
           cache: gradle
 
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Android packages
+        shell: bash
+        run: |
+          set -euo pipefail
+          yes | sdkmanager --licenses > /dev/null || true
+          sdkmanager \
+            "platform-tools" \
+            "build-tools;${ANDROID_BUILD_TOOLS}" \
+            "platforms;${ANDROID_PLATFORM}" \
+            "ndk;${ANDROID_NDK_VERSION}" \
+            "cmake;${ANDROID_CMAKE_VERSION}"
+
+      - name: Validate required secrets
+        shell: bash
+        run: |
+          set -euo pipefail
+          missing=()
+          for var in EXTRA_APP_ID EXTRA_APP_HASH GOOGLE_SERVICES_JSON_B64; do
+            if [ -z "${!var:-}" ]; then
+              missing+=("$var")
+            fi
+          done
+          if [ "${{ github.event.inputs.build_type }}" = "release" ]; then
+            for var in SIGNING_KEYSTORE_B64 SIGNING_STORE_PASSWORD SIGNING_KEY_ALIAS SIGNING_KEY_PASSWORD; do
+              if [ -z "${!var:-}" ]; then
+                missing+=("$var")
+              fi
+            done
+          fi
+          if [ "${#missing[@]}" -gt 0 ]; then
+            printf 'Missing required GitHub secrets for this run:\n'
+            printf ' - %s\n' "${missing[@]}"
+            exit 1
+          fi
+
+      - name: Create local.properties
+        shell: bash
+        run: |
+          set -euo pipefail
+          KEYSTORE_PATH="${GITHUB_WORKSPACE}/release.keystore"
+          cat > local.properties <<EOF
+          sdk.dir=${ANDROID_SDK_ROOT}
+          EOF
+          if [ -n "${SIGNING_KEYSTORE_B64:-}" ]; then
+            echo "${SIGNING_KEYSTORE_B64}" | base64 --decode > "${KEYSTORE_PATH}"
+            cat >> local.properties <<EOF
+          storeFile=${KEYSTORE_PATH}
+          storePassword=${SIGNING_STORE_PASSWORD}
+          keyAlias=${SIGNING_KEY_ALIAS}
+          keyPassword=${SIGNING_KEY_PASSWORD}
+          EOF
+          fi
+
+      - name: Restore google-services.json
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p TMessagesProj_App
+          echo "${GOOGLE_SERVICES_JSON_B64}" | base64 --decode > TMessagesProj_App/google-services.json
 
       - name: Generate Extra.java
         shell: bash
@@ -142,65 +191,34 @@ jobs:
           Path("TMessagesProj/src/main/java/tw/nekomimi/nekogram/Extra.java").write_text(content, encoding="utf-8")
           PY
 
-
-      - name: Build with Gradle
-        run: ./gradlew TMessagesProj_App:${{ matrix.task }}
-
-      - name: Extract Version
+      - name: Tune Gradle for CI
+        shell: bash
         run: |
-          grep VERSION_NAME TMessagesProj/build/generated/source/buildConfig/${{ matrix.type }}/org/telegram/messenger/BuildConfig.java | cut -d'"' -f 2 > ver.txt || echo "unknown" > ver.txt
-          echo "VERSION=$(cat ver.txt)" >> $GITHUB_ENV
+          set -euo pipefail
+          cat >> gradle.properties <<EOF
+          org.gradle.jvmargs=-Xmx5g -XX:MaxMetaspaceSize=1g -Dfile.encoding=UTF-8 -XX:+UseParallelGC
+          org.gradle.workers.max=2
+          kotlin.incremental=false
+          EOF
 
-      - name: Prepare Artifact
+      - name: Build debug APKs
+        if: ${{ github.event.inputs.build_type == 'debug' }}
+        run: ./gradlew --no-daemon --max-workers=2 -PTARGET_ABI=${TARGET_ABI} assembleDebug
+
+      - name: Build release APKs
+        if: ${{ github.event.inputs.build_type == 'release' }}
+        run: ./gradlew --no-daemon --max-workers=2 -PTARGET_ABI=${TARGET_ABI} assembleRelease
+
+      - name: Collect APKs
+        shell: bash
         run: |
-          mkdir -p artifact
-          if [ "${{ matrix.type }}" == "release" ]; then
-            find TMessagesProj_App/build/outputs/apk/release -name "*.apk" -exec cp {} "artifact/Nekogram_$(cat ver.txt)_${{ matrix.name }}.apk" \;
-          else
-            find TMessagesProj_App/build/outputs/apk/debug -name "*.beta.apk" -exec cp {} "artifact/Nekogram_$(cat ver.txt)_${{ matrix.name }}.apk" \;
-            find TMessagesProj_App/build/outputs/apk/debug -name "*.apk" ! -name "*.beta.apk" -exec cp {} "artifact/Nekogram_$(cat ver.txt)_${{ matrix.name }}.apk" \; || true
-          fi
+          set -euo pipefail
+          mkdir -p artifacts
+          find TMessagesProj_App/build/outputs/apk -name "*${TARGET_ABI}.apk" -print -exec cp {} artifacts/ \;
 
-      - name: Upload APK
+      - name: Upload APK artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: Nekogram-${{ matrix.type }}
-          path: artifact/
-
-  release:
-    name: Create Release
-    needs: build
-    runs-on: ubuntu-latest
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main')
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Download debug artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: Nekogram-debug
-          path: debug_asset
-
-      - name: Download release artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: Nekogram-release
-          path: release_asset
-
-      - name: Get version info
-        run: |
-          find release_asset -name "*.apk" | head -1 | sed 's/.*Nekogram_//;s/_Release\.apk//' > version.txt || echo "build" > version.txt
-          echo "VERSION=$(cat version.txt)" >> $GITHUB_ENV
-
-      - name: Create Release
-        uses: softprops/action-gh-release@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          draft: true
-          files: |
-            debug_asset/*
-            release_asset/*
-          tag_name: v${{ env.VERSION }}
-          name: "Nekogram ${{ env.VERSION }}"
-          body: "Automated build of Nekogram version ${{ env.VERSION }}"
+          name: nekogram-${{ github.event.inputs.build_type }}-apks
+          path: artifacts/*.apk
+          if-no-files-found: error
