@@ -4,7 +4,6 @@ import java.nio.file.Paths
 plugins {
     id 'com.android.library'
     id 'org.lsposed.lsparanoid'
-    id "io.sentry.android.gradle" version "6.3.0"
 }
 
 configurations.configureEach {
