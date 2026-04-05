@@ -118,7 +118,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p TMessagesProj/src/main/java/tw/nekomimi/nekogram
+          mkdir -p TMessagesProj/src/main/java/dev/axllr8tr/mikogram
           python3 - <<'PY'
           import json
           import os
@@ -139,14 +139,14 @@ jobs:
               raise SystemExit("EXTRA_FORCE_ANALYTICS must be true or false when set")
           force_analytics = force_analytics or "false"
 
-          content = f"""package tw.nekomimi.nekogram;
+          content = f"""package dev.axllr8tr.mikogram;
 
           import org.telegram.messenger.BuildConfig;
 
           import java.util.List;
 
-          import tw.nekomimi.nekogram.helpers.UserHelper;
-          import tw.nekomimi.nekogram.helpers.remote.ConfigHelper;
+          import dev.axllr8tr.mikogram.helpers.UserHelper;
+          import dev.axllr8tr.mikogram.helpers.remote.ConfigHelper;
 
           public class Extra {{
               public static final int APP_ID = {app_id};
@@ -171,7 +171,7 @@ jobs:
               }}
 
               public static List<ConfigHelper.News> getDefaultNews() {{
-                  return null;
+                  return new ArrayList<ConfigHelper.News>();
               }}
 
               public static UserHelper.BotInfo getHelperBot() {{
@@ -188,7 +188,7 @@ jobs:
           }}
           """
 
-          Path("TMessagesProj/src/main/java/tw/nekomimi/nekogram/Extra.java").write_text(content, encoding="utf-8")
+          Path("TMessagesProj/src/main/java/dev/axllr8tr/mikogram/Extra.java").write_text(content, encoding="utf-8")
           PY
 
       - name: Tune Gradle for CI
