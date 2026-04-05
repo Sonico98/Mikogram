@@ -110,6 +110,17 @@ jobs:
           EOF
           fi
 
+      - name: Create sentry.properties
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > sentry.properties <<EOF
+          defaults.project=${SENTRY_PROJECT}
+          defaults.org=${SENTRY_ORG}
+          auth.token=${SENTRY_AUTH_TOKEN}
+          EOF
+          cp sentry.properties TMessagesProj/sentry.properties
+
       - name: Restore google-services.json
         shell: bash
         run: |
