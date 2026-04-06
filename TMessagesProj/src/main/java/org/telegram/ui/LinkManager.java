@@ -1,5 +1,6 @@
 package org.telegram.ui;
 
+import static org.telegram.messenger.LocaleController.formatString;
 import static org.telegram.messenger.LocaleController.getString;
 import static org.telegram.messenger.MessagesController.findUpdatesAndRemove;
 
@@ -23,6 +24,7 @@ import org.telegram.messenger.NotificationsController;
 import org.telegram.messenger.R;
 import org.telegram.messenger.SharedConfig;
 import org.telegram.messenger.UserConfig;
+import org.telegram.messenger.UserObject;
 import org.telegram.messenger.Utilities;
 import org.telegram.messenger.browser.Browser;
 import org.telegram.tgnet.ConnectionsManager;
@@ -34,7 +36,9 @@ import org.telegram.ui.ActionBar.AlertDialog;
 import org.telegram.ui.ActionBar.BaseFragment;
 import org.telegram.ui.ActionBar.INavigationLayout;
 import org.telegram.ui.Components.AlertsCreator;
+import org.telegram.ui.Components.Bulletin;
 import org.telegram.ui.Components.BulletinFactory;
+import org.telegram.ui.Components.CreateBotAlert;
 import org.telegram.ui.Components.Premium.boosts.UserSelectorBottomSheet;
 import org.telegram.ui.Components.SharedMediaLayout;
 import org.telegram.ui.Components.voip.VoIPHelper;
@@ -125,6 +129,10 @@ public class LinkManager {
 
         if ("oauth".equalsIgnoreCase(first))
             return handleOAuth(uri, uri.getQueryParameter("startapp"));
+        if ("newbot".equalsIgnoreCase(first)) {
+            if (segments.size() < 2) return true;
+            return handleNewBot(second, segments.size() >= 3 ? segments.get(2) : null, uri.getQueryParameter("name"));
+        }
 
         if ("nekosettings".equals(first)) {
             SettingsHelper.processDeepLink(uri, this::presentFragment,
@@ -162,6 +170,9 @@ public class LinkManager {
 
         final String first = segments.get(0);
         final String second = segments.size() > 1 ? segments.get(1) : null;
+
+        if ("newbot".equalsIgnoreCase(first))
+            return handleNewBot(uri.getQueryParameter("manager"), uri.getQueryParameter("username"), uri.getQueryParameter("name"));
 
         if ("resolve".equalsIgnoreCase(first))
             return handleTgResolve(uri);
@@ -1326,6 +1337,68 @@ public class LinkManager {
             OAuthSheet.handle(isExternalIntent, currentAccount, req, res);
         });
 
+        return true;
+    }
+
+    private boolean handleNewBot(String managerUsername, String username, String title) {
+        final TLRPC.TL_requestPeerTypeCreateBot peer_type = new TLRPC.TL_requestPeerTypeCreateBot();
+        peer_type.bot_managed = true;
+        if (!TextUtils.isEmpty(title)) {
+            peer_type.flags |= TLObject.FLAG_1;
+            peer_type.suggested_name = title;
+        }
+        if (!TextUtils.isEmpty(username)) {
+            peer_type.flags |= TLObject.FLAG_2;
+            peer_type.suggested_username = username;
+        }
+        final BaseFragment fragment = LaunchActivity.getSafeLastFragment();
+        if (fragment == null || fragment.getContext() == null) return true;
+
+        init();
+        final TLRPC.User[] manager = new TLRPC.User[] { null /* MessagesController.getInstance(currentAccount).getUser(managerUsername) */ };
+        final Runnable open = () -> {
+            CreateBotAlert.show(fragment.getContext(), currentAccount, manager[0], peer_type, true, newBot -> {
+                done();
+                if (newBot == null) {
+                    return;
+                }
+                final long managerId = manager[0].id;
+                final Bundle args = new Bundle();
+                args.putLong("user_id", newBot.id);
+                final ChatActivity chatActivity = new ChatActivity(args) {
+                    private boolean shownToast;
+                    @Override
+                    public void onBecomeFullyVisible() {
+                        super.onBecomeFullyVisible();
+                        if (!shownToast) {
+                            shownToast = true;
+                            BulletinFactory.of(this).createSimpleBulletin(
+                                R.raw.contact_check,
+                                formatString(R.string.CreateManagedBotCreatedTitle, UserObject.getUserName(newBot)),
+                                AndroidUtilities.replaceSingleTag(
+                                    formatString(R.string.CreateManagedBotCreatedText, UserObject.getUserName(manager[0])),
+                                    () -> presentFragment(ChatActivity.of(managerId))
+                                )
+                            ).show();
+                        }
+                    }
+                };
+                presentFragment(chatActivity);
+            }, fragment.getResourceProvider(), getBulletinFactory(), false);
+        };
+//        if (manager[0] == null) {
+            MessagesController.getInstance(currentAccount).getUserNameResolver().resolve(managerUsername, id -> {
+                manager[0] = id == null ? null : MessagesController.getInstance(currentAccount).getUser(id);
+                if (manager[0] == null) {
+                    done();
+                    getBulletinFactory().createErrorBulletin(LocaleController.getString(R.string.NoUsernameFound)).show();
+                    return;
+                }
+                open.run();
+            });
+//        } else {
+//            open.run();
+//        }
         return true;
     }
 

@@ -718,7 +718,7 @@ public class TextMessageEnterTransition implements MessageEnterTransitionContain
                 if (messageView.needReplyImage && (!messageView.isReplyQuote || messageView.replyTextRTL)) {
                     left += replyImageSz + dp(3);
                 }
-                if (messageView.isReplyTask && messageView.replyTaskCheckbox != null) {
+                if (messageView.isReplyTaskOrPollOption && messageView.replyTaskCheckbox != null) {
                     final float x = lerp(fromReplayX - messageView.replyTextOffset, left, progressX);
                     final int sz = 12;
                     messageView.replyTaskCheckbox.setBounds((int) x, (int) top + dp(2), dp(sz), dp(sz));
@@ -728,7 +728,7 @@ public class TextMessageEnterTransition implements MessageEnterTransitionContain
                     messageView.replyTaskCheckbox.setAlpha(progress);
                     messageView.replyTaskCheckbox.draw(canvas);
                 }
-                if (messageView.isReplyTask) {
+                if (messageView.isReplyTaskOrPollOption) {
                     left += dp(16);
                 }
                 if (messageView.replyTextRTL && messageView.replyTextOffset > 0) {

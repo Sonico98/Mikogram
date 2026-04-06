@@ -27,8 +27,8 @@ public class AnalyticsHelper {
 
     private static FirebaseAnalytics firebaseAnalytics;
 
-    public static boolean sendBugReport = true;
-    public static boolean analyticsDisabled = false;
+    public static boolean sendBugReport = false;
+    public static boolean analyticsDisabled = true;
     public static String userId = null;
 
     public static void start(Application application) {

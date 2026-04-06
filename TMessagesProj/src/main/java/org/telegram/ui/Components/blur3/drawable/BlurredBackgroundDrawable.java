@@ -41,7 +41,6 @@ import org.telegram.ui.Components.blur3.utils.NinePatchBuilder;
 
 import java.lang.ref.WeakReference;
 import java.util.Arrays;
-
 import dev.axllr8tr.mikogram.NekoConfig;
 
 public abstract class BlurredBackgroundDrawable extends Drawable {
@@ -85,6 +84,17 @@ public abstract class BlurredBackgroundDrawable extends Drawable {
             onBoundPropsChanged();
         }
         return this;
+    }
+
+    public BlurredBackgroundDrawable setHasPadding(boolean hasPadding) {
+        boundProps.hasPadding = hasPadding;
+        return this;
+    }
+
+    @Override
+    public boolean getPadding(@NonNull Rect padding) {
+        padding.set(boundProps.padding, boundProps.padding, boundProps.padding, boundProps.padding);
+        return boundProps.hasPadding;
     }
 
     public BlurredBackgroundDrawable setRadius(float radius) {
@@ -208,6 +218,7 @@ public abstract class BlurredBackgroundDrawable extends Drawable {
         public final float[] radii = new float[8];
         public final float[] shaderRadii = new float[8];
         public int padding;
+        public boolean hasPadding;
         public int liquidThickness;
         public float liquidIntensity = 0.75f;
         public float liquidIndex = 1.5f;
@@ -315,6 +326,11 @@ public abstract class BlurredBackgroundDrawable extends Drawable {
         }
 
         return viewOutlineProvider;
+    }
+
+    @Override
+    public void getOutline(@NonNull Outline outline) {
+        BlurredBackgroundDrawable.getOutline(outline, boundProps.boundsWithPadding, boundProps.radii);
     }
 
     private static Path tmpPath = new Path();
